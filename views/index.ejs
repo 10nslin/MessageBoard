@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Message Board</title>
+</head>
+<body>
+    <h1>Message Board</h1>
+    <form action="/add" method="POST">
+        <h4>Name: <input type="text" name="name"></h4>
+        <h4>Message: <input type="textarea" name="message"></h4>
+        <input type="submit" value="Show Message">
+    </form>
+    <% for(let i of data) { %>
+        <h3><%=i.name%></h3>
+        <h3><%=i.message%></h3>
+        <hr>
+    <%}%>
+
+</body>
+</html>
