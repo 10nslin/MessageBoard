@@ -1,9 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 
 app.use(express.static(path.join(__dirname, './static')));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
@@ -16,7 +18,7 @@ mongoose.Promise = global.Promise;
 const Schema = mongoose.Schema;
 const MessageSchema = new mongoose.Schema({
     name: { type: String, required: true, minlength: 2},
-    message:{ type: String, required: true, minlength: 6},
+    message:{ type: String, required: true, minlength: 4},
     comments:[{type: Schema.Types.ObjectId, ref: 'Comment'}]
    },{timestamps: true});
 
@@ -52,6 +54,27 @@ app.post('/add', function(req, res) {
         }
     })
     
+});
+
+app.post('/comment/:id',function(req,res){
+    Message.findOne({_id:req.params.id},function(err,post){   
+        var newComment = new Comment({      
+            name: req.body.commentName, 
+            comment: req.body.comment,
+            _message: post._id
+        });
+        newComment.save(function(err){
+            post.comments.push(newComment);
+            post.save(function(err){
+            if(err){
+            console.log("error adding comment", error)
+            }else{    
+            console.log("comment added", post)
+                res.redirect('/')
+            }
+        })
+    })
+    })
 });
 
 // Setting our Server to Listen on Port: 8000

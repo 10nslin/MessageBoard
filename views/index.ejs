@@ -16,6 +16,17 @@
     <% for(let i of data) { %>
         <h3><%=i.name%></h3>
         <h3><%=i.message%></h3>
+
+        <% for(let index of i.comments) { %>
+            <h3><%=index.name%></h3>
+            <h3><%=index.comment%></h3>
+    
+        <%}%>
+    <form action="/comment/<%=i.id%>" method="POST">
+        <h4>Name: <input type="text" name="commentName"></h4>
+        <h4>Comment: <input type="text" name="comment"></h4>
+        <input type="submit" value="Send Message">
+    </form>
         <hr>
     <%}%>
 
